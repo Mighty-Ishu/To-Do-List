@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO-DO List Workspace</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="todo.css">
+</head>
+<body>
+
+    <div id="onboardingGateway" class="hidden">
+        <div class="onboardingCard">
+            <div class="onboardingHeader">
+                <i class="fa-solid fa-wand-magic-sparkles magicIcon"></i>
+                <h2>Welcome Workspace</h2>
+                <p>Let's set up your personal productivity hub.</p>
+            </div>
+            
+            <div class="onboardingBody">
+                <div class="onboardingRow">
+                    <label for="onboardingNameInput">What is your name?</label>
+                    <input type="text" id="onboardingNameInput" placeholder="Type your name here..." autocomplete="off">
+                </div>
+                
+                <div class="onboardingRow">
+                    <label>Location Preference</label>
+                    <p class="onboardingHelpText">We use your location solely to fetch real-time weather details for your header dashboard.</p>
+                    <button id="onboardingLocationBtn" class="onboardingLightBtn">
+                        <i class="fa-solid fa-location-crosshairs"></i> Enable Live Weather
+                    </button>
+                    <span id="onboardingGeoStatus">Location preference pending...</span>
+                </div>
+                
+                <button id="onboardingSubmitBtn" class="onboardingMainSubmit">Enter My Workspace</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="appContainer" class="hidden">
+        
+        <div id="sidebar" class="collapsed">
+            <button id="menuBtn" class="navBtn"><i class="fa-solid fa-bars"></i></button>
+            <button id="searchToggleBtn" class="navBtn"><i class="fa-solid fa-magnifying-glass"></i> <span>Search</span></button>
+
+            <button id="navAddTask" class="navBtn activeNav"><i class="fa-solid fa-plus"></i> <span>Add Task</span></button>
+            <button id="navCompleted" class="navBtn"><i class="fa-solid fa-circle-check"></i> <span>Completed</span></button>
+            <button id="navBin" class="navBtn"><i class="fa-solid fa-trash-can"></i> <span>Bin</span></button>
+            
+            <div class="sidebarDivider"></div>
+            
+            <div class="sidebarLabel"><span>Categories</span></div>
+            <button id="navCatPersonal" class="navBtn catNav" data-category="Personal">
+                <i class="fa-solid fa-user"></i> <span>Personal</span> <span id="badgePersonal" class="catBadge">0</span>
+            </button>
+            <button id="navCatCollege" class="navBtn catNav" data-category="College">
+                <i class="fa-solid fa-graduation-cap"></i> <span>College</span> <span id="badgeCollege" class="catBadge">0</span>
+            </button>
+            <button id="navCatWork" class="navBtn catNav" data-category="Work">
+                <i class="fa-solid fa-briefcase"></i> <span>Work</span> <span id="badgeWork" class="catBadge">0</span>
+            </button>
+
+            <div style="flex-grow: 1;"></div> 
+            <button id="themeToggleBtn" class="navBtn"><i class="fa-solid fa-moon"></i> <span>Dark Mode</span></button>
+            <button id="navProfile" class="navBtn"><i class="fa-solid fa-gear"></i> <span>Settings</span></button>
+        </div>
+
+        <div id="mainContent">
+            
+            <div id="header">
+                <div class="headerLeft">
+                    <h1 id="greetingLine">Hello!</h1>
+                    <p id="healthQuote">Hope you are staying healthy and productive today.</p>
+                </div>
+                <div class="headerRight">
+                    <div id="liveClock">00:00:00 AM</div>
+                    <div id="liveDate">Loading Date...</div>
+                    <div id="weatherWidget">
+                        <span id="weatherIcon"><i class="fa-solid fa-cloud"></i></span>
+                        <span id="weatherText">Weather Syncing...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="contentSearchContainer" class="hiddenSearch">
+                <div class="searchWrapperBox">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="workspaceSearch" placeholder="Search here...">
+                </div>
+            </div>
+
+            <div id="addTaskView" class="viewPanel">
+                
+                <div id="categoryProgressWrapper" class="hidden">
+                    <div class="progressMeta">
+                        <span id="progressCategoryName">Category Progress</span>
+                        <span id="progressCount">0% (0/0)</span>
+                    </div>
+                    <div class="progressBarBg">
+                        <div id="progressBarFill"></div>
+                    </div>
+                </div>
+                
+                <div id="inputContainer">
+                    <textarea id="taskInput" placeholder="Enter a task" rows="1" oninput="resizeInput(this)"></textarea>
+                    
+                    <select id="categorySelect">
+                        <option value="Personal">Personal</option>
+                        <option value="College">College</option>
+                        <option value="Work">Work</option>
+                    </select>
+
+                    <select id="horizonSelect">
+                        <option value="Daily">Daily</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Monthly">Monthly</option>
+                    </select>
+
+                    <div class="deadlineDropdownContainer">
+                        <button id="deadlineToggleBtn" class="deadlineTriggerBtn">
+                            <i class="fa-regular fa-calendar-check"></i> Set Deadline
+                        </button>
+                        <div id="deadlineDropdownContent" class="deadlineMenuPanel hidden"></div>
+                    </div>
+                    
+                    <button id="submitBtn">Add Task</button>
+                </div>
+                
+                <ul id="taskList"></ul>
+            </div>
+
+            <div id="completedView" class="viewPanel hidden">
+                <ul id="completedList"></ul>
+            </div>
+
+            <div id="binView" class="viewPanel hidden">
+                <ul id="binList"></ul>
+            </div>
+
+            <div id="profileView" class="viewPanel hidden">
+                <div class="settingsCardWrapper">
+                    <h2>Account Settings</h2>
+                    
+                    <div class="settingsRowGroup">
+                        <label>Profile Username</label>
+                        <div class="inlineInputGroup">
+                            <input type="text" id="usernameSettingsField" placeholder="Enter name">
+                            <button id="saveNameBtn" class="settingsActionBtn">Update Name</button>
+                        </div>
+                    </div>
+                    
+                    <div class="settingsRowGroup">
+                        <label>Location & Weather Diagnostics</label>
+                        <p class="settingsSubtext">Re-sync your browser coordinates to refresh weather settings.</p>
+                        <button id="re-requestLocationBtn" class="settingsActionBtn locationBtnColor">
+                            <i class="fa-solid fa-location-arrow"></i> Sync Live Weather
+                        </button>
+                    </div>
+                    
+                    <div class="settingsRowGroup logoutBorderTop">
+                        <label style="color: #c62828;">Danger Zone</label>
+                        <p class="settingsSubtext">Logging out will erase all current saved tasks and reset your workspace preferences permanently.</p>
+                        <button id="workspaceLogoutBtn" class="settingsActionBtn logoutBtnColor">
+                            <i class="fa-solid fa-right-from-bracket"></i> Wipe & Log Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div id="customLogoutModal" class="modalOverlay hiddenModal">
+        <div class="modalBox">
+            <div class="modalHeader">
+                <i class="fa-solid fa-triangle-exclamation warningIcon animatePulse"></i>
+                <h3>Wipe Workspace?</h3>
+                <p>This action completely deletes your database tracking records. You cannot undo this modification.</p>
+            </div>
+            <div class="modalActionsRow">
+                <button id="modalCancelBtn" class="modalBtn secondaryBtn">Cancel</button>
+                <button id="modalConfirmBtn" class="modalBtn primaryDangerBtn">Log Out</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="todo.js"></script>
+</body>
+</html>

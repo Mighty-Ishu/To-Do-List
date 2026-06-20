@@ -1,0 +1,217 @@
+/* ==========================================================================
+   1. THEME VARIABLE REPOSITORIES
+   ========================================================================== */
+:root {
+    --bg-main: rgb(141, 64, 186); --bg-sidebar: #2c1a4d; --text-sidebar: #bfa8e0;
+    --card-bg: white; --card-text: #333333; --card-subtext: #757575; --search-border: #2c1a4d;
+    --header-bg: rgba(255, 255, 255, 0.18); --header-blur: blur(12px); 
+    --header-border: 1px solid rgba(255, 255, 255, 0.2); --header-text: #ffffff;
+}
+
+body.dark-mode {
+    --bg-main: #121212; --bg-sidebar: #1e1e1e; --text-sidebar: #aaaaaa;
+    --card-bg: #2d2d2d; --card-text: #f5f5f5; --card-subtext: #b0b0b0; --search-border: #ff9800;
+    --header-bg: rgba(0, 0, 0, 0.35); --header-blur: blur(12px); 
+    --header-border: 1px solid rgba(255, 255, 255, 0.05); --header-text: #f5f5f5;
+}
+
+/* ==========================================================================
+   2. GLOBAL CONTAINER ARCHITECTURE
+   ========================================================================== */
+body { background-color: var(--bg-main); margin: 0; font-family: Arial, sans-serif; display: flex; height: 100vh; transition: background-color 0.3s ease; overflow: hidden; }
+#appContainer { display: flex; width: 100vw; height: 100vh; }
+#mainContent { flex-grow: 1; overflow-y: auto; padding-bottom: 50px; display: flex; flex-direction: column; align-items: center; }
+.hidden { display: none !important; }
+.hiddenModal { display: none !important; opacity: 0; }
+
+/* ==========================================================================
+   3. ONBOARDING GATEWAY LAYOUT
+   ========================================================================== */
+#onboardingGateway { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-main); display: flex; justify-content: center; align-items: center; z-index: 100000; }
+.onboardingCard { background-color: var(--card-bg); color: var(--card-text); width: 90%; max-width: 440px; padding: 40px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 25px; box-sizing: border-box; transition: background-color 0.3s ease; }
+.onboardingHeader { text-align: center; }
+.magicIcon { font-size: 40px; color: rgb(141, 64, 186); margin-bottom: 12px; }
+body.dark-mode .magicIcon { color: #ff9800; }
+.onboardingHeader h2 { margin: 0; font-size: 26px; font-weight: bold; }
+.onboardingHeader p { margin: 6px 0 0 0; font-size: 14px; color: var(--card-subtext); }
+.onboardingBody { display: flex; flex-direction: column; gap: 20px; }
+.onboardingRow { display: flex; flex-direction: column; gap: 8px; }
+.onboardingRow label { font-size: 15px; font-weight: bold; }
+.onboardingHelpText { margin: 0; font-size: 12px; color: var(--card-subtext); line-height: 1.4; }
+#onboardingNameInput { height: 44px; border-radius: 12px; border: 2px solid rgba(0,0,0,0.1); padding: 0 15px; font-size: 16px; outline: none; background-color: transparent; color: var(--card-text); transition: border-color 0.2s ease; }
+body.dark-mode #onboardingNameInput { border: 2px solid rgba(255,255,255,0.1); }
+#onboardingNameInput:focus { border-color: rgb(141, 64, 186); }
+body.dark-mode #onboardingNameInput:focus { border-color: #ff9800; }
+.onboardingLightBtn { height: 40px; border-radius: 12px; border: none; background-color: #009688; color: white; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background-color 0.2s ease; width: max-content; padding: 0 20px; }
+.onboardingLightBtn:hover { background-color: #00796b; }
+#onboardingGeoStatus { font-size: 12px; font-weight: bold; color: var(--card-subtext); }
+.onboardingMainSubmit { margin-top: 10px; height: 46px; border-radius: 12px; border: none; background-color: #2c1a4d; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.2s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+.onboardingMainSubmit:hover { background-color: #432b73; }
+body.dark-mode .onboardingMainSubmit { background-color: #ff9800; color: #121212; }
+body.dark-mode .onboardingMainSubmit:hover { background-color: #e08600; }
+
+/* ==========================================================================
+   4. SIDEBAR NAVIGATION & BADGES
+   ========================================================================== */
+#sidebar { width: 220px; background-color: var(--bg-sidebar); display: flex; flex-direction: column; padding: 20px 10px; gap: 10px; box-shadow: 2px 0 10px rgba(0,0,0,0.3); transition: width 0.3s ease, background-color 0.3s ease; box-sizing: border-box; flex-shrink: 0; }
+#sidebar.collapsed { width: 70px; }
+#menuBtn { margin-bottom: 5px; color: white !important; }
+.sidebarDivider { height: 1px; background-color: rgba(255, 255, 255, 0.1); margin: 10px 5px; }
+.sidebarLabel { color: #75639e; font-size: 12px; font-weight: bold; text-transform: uppercase; padding-left: 15px; letter-spacing: 1px; white-space: nowrap; }
+#sidebar.collapsed .sidebarLabel { display: none; }
+.navBtn { background: transparent; border: none; color: var(--text-sidebar); font-size: 18px; text-align: left; padding: 12px 15px; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 15px; width: 100%; box-sizing: border-box; white-space: nowrap; }
+.navBtn i { font-size: 20px; width: 25px; text-align: center; flex-shrink: 0; }
+#sidebar.collapsed .navBtn span { display: none; }
+.navBtn:hover { background-color: rgba(255, 255, 255, 0.1); color: white; }
+.navBtn.activeNav { background-color: rgb(231, 52, 52); color: white; font-weight: bold; }
+#sidebar #navCatPersonal.activeNav { background-color: #ff9800; }
+#sidebar #navCatCollege.activeNav { background-color: #2196f3; }
+#sidebar #navCatWork.activeNav { background-color: #9c27b0; }
+#sidebar #navProfile.activeNav { background-color: #009688; }
+#searchToggleBtn.activeSearchMode { background-color: rgba(255, 255, 255, 0.2); color: #ffffff !important; border-left: 4px solid #ff9800; }
+
+/* Live Sidebar Number Badges */
+.catBadge { margin-left: auto; background-color: rgba(255, 255, 255, 0.1); color: var(--text-sidebar); font-size: 11px; font-weight: bold; padding: 2px 8px; border-radius: 12px; transition: all 0.3s ease; }
+.navBtn:hover .catBadge { background-color: rgba(255, 255, 255, 0.2); color: white; }
+.navBtn.activeNav .catBadge { background-color: white !important; color: #121212 !important; }
+#sidebar.collapsed .catBadge { display: none; }
+
+/* ==========================================================================
+   5. HEADER DASHBOARD & SEARCH
+   ========================================================================== */
+#header { background-color: var(--header-bg); backdrop-filter: var(--header-blur); -webkit-backdrop-filter: var(--header-blur); border-bottom: var(--header-border); color: var(--header-text); padding: 24px 40px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; width: 100%; box-sizing: border-box; }
+.headerLeft { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+#header h1 { margin: 0; font-size: 26px; font-weight: bold; letter-spacing: -0.5px; }
+#healthQuote { margin: 0; font-size: 14px; opacity: 0.8; font-style: italic; }
+.headerRight { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; text-align: right; }
+#liveClock { font-size: 26px; font-weight: bold; font-family: monospace; letter-spacing: 1px; }
+#liveDate { font-size: 13px; font-weight: bold; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; }
+#weatherWidget { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; margin-top: 2px; background-color: rgba(255, 255, 255, 0.15); padding: 5px 12px; border-radius: 20px; }
+body.dark-mode #weatherWidget { background-color: rgba(0, 0, 0, 0.25); }
+
+#contentSearchContainer { display: flex; justify-content: center; width: 100%; margin-top: 10px; margin-bottom: 15px; opacity: 1; transform: translateY(0); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+#contentSearchContainer.hiddenSearch { display: none !important; opacity: 0; transform: translateY(-20px); }
+.searchWrapperBox { display: flex; align-items: center; background-color: var(--card-bg); border: 2px solid var(--search-border); border-radius: 20px; padding: 0 18px; width: 320px; height: 40px; gap: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: background-color 0.3s ease, border-color 0.3s ease; }
+.searchWrapperBox i { color: #2c1a4d; font-size: 16px; }
+#workspaceSearch { border: none; outline: none; font-size: 16px; font-weight: bold; color: var(--card-text); width: 100%; background: transparent; }
+#workspaceSearch::placeholder { color: #a092bd; }
+
+/* ==========================================================================
+   6. INPUT BAR & PROGRESS TRACKER
+   ========================================================================== */
+#categoryProgressWrapper { width: 100%; max-width: 600px; margin: 10px auto 30px auto; background-color: var(--card-bg); padding: 18px 24px; border-radius: 16px; box-shadow: 0 8px 16px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 12px; box-sizing: border-box; border: 1px solid rgba(0,0,0,0.03); animation: modalPopIn 0.3s ease; }
+.progressMeta { display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: bold; color: var(--card-text); }
+#progressCount { color: var(--card-subtext); font-size: 13px; }
+.progressBarBg { width: 100%; height: 10px; background-color: rgba(0, 0, 0, 0.06); border-radius: 10px; overflow: hidden; }
+body.dark-mode .progressBarBg { background-color: rgba(255, 255, 255, 0.08); }
+#progressBarFill { height: 100%; width: 0%; border-radius: 10px; transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease; }
+
+#inputContainer { margin-top: 30px; display: flex; justify-content: center; align-items: center; gap: 12px; width: 100%; position: relative; }
+#taskInput { min-width: 180px; max-width: 400px; width: 180px; height: 40px; min-height: 40px; font-size: 16px; text-align: left; padding: 10px 15px; border-radius: 20px; border: none; outline: none; resize: none; font-family: inherit; box-sizing: border-box; overflow-y: hidden; }
+#categorySelect, #horizonSelect { height: 40px; font-size: 15px; border-radius: 20px; padding: 0 15px; border: none; outline: none; background-color: var(--card-bg); cursor: pointer; font-weight: bold; color: var(--card-text); transition: background-color 0.3s ease, color 0.3s ease; text-align-last: center; }
+#submitBtn { width: 110px; height: 40px; font-size: 16px; border-radius: 20px; background-color: rgb(246, 245, 245); border: none; cursor: pointer; font-weight: bold; }
+#submitBtn:hover { background-color: grey; color: white; }
+
+.deadlineDropdownContainer { position: relative; display: inline-block; }
+.deadlineTriggerBtn { height: 40px; font-size: 15px; font-weight: bold; border-radius: 20px; border: none; padding: 0 16px; background-color: var(--card-bg); color: var(--card-text); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; }
+.deadlineTriggerBtn:hover { background-color: rgba(255,255,255,0.8); }
+body.dark-mode .deadlineTriggerBtn:hover { background-color: rgba(255,255,255,0.1); }
+.deadlineTriggerBtn.activeState { background-color: #009688 !important; color: white !important; }
+.deadlineMenuPanel { position: absolute; top: 48px; left: 50%; transform: translateX(-50%); background-color: var(--card-bg); border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); padding: 15px; z-index: 100; display: flex; flex-direction: column; gap: 10px; min-width: 200px; border: 1px solid rgba(0,0,0,0.05); }
+.deadlineMenuPanel label { font-size: 12px; font-weight: bold; color: var(--card-subtext); text-transform: uppercase; }
+.deadlineMenuPanel input { height: 38px; border-radius: 8px; border: 1px solid var(--card-subtext); padding: 0 10px; font-size: 14px; font-weight: bold; background: transparent; color: var(--card-text); outline: none; width: 100%; box-sizing: border-box; }
+
+/* ==========================================================================
+   7. KANBAN CARD ARCHITECTURE & DRAG/DROP
+   ========================================================================== */
+#taskList, #binList, #completedList { list-style: none; padding: 0; margin-top: 30px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; width: 100%; }
+#taskList li, #binList li, #completedList li { background-color: var(--card-bg); border-radius: 16px; width: fit-content; min-width: 320px; max-width: 600px; min-height: 120px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 16px rgba(0,0,0,0.06); position: relative; transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease; box-sizing: border-box; border: 1px solid rgba(0,0,0,0.03); }
+#taskList li:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,0.1); }
+
+.cardMainBody { padding: 18px 20px 12px 20px; display: flex; flex-direction: column; gap: 8px; }
+.cardTopRow { display: flex; justify-content: space-between; align-items: flex-start; padding-right: 25px; gap: 15px; }
+.taskText { font-size: 18px; font-weight: bold; color: var(--card-text); line-height: 1.3; transition: color 0.3s ease; overflow-wrap: break-word; word-break: break-word; flex: 1; padding-right: 10px; }
+.taskText[contenteditable="true"] { outline: none; border-bottom: 2px dashed rgb(141, 64, 186); background-color: rgba(0, 0, 0, 0.03); padding: 2px 4px; border-radius: 4px; }
+body.dark-mode .taskText[contenteditable="true"] { border-bottom: 2px dashed #ff9800; }
+
+.cardCategoryFlag { font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.8px; color: white !important; padding: 4px 10px; border-radius: 12px; opacity: 1; margin-top: 0; display: flex; align-items: center; justify-content: center; }
+.cat-personal { background-color: #ff9800; } 
+.cat-college  { background-color: #2196f3; } 
+.cat-work     { background-color: #9c27b0; } 
+
+.cardTimerRow { display: flex; align-items: center; gap: 6px; }
+.deadlineTracker { font-size: 12px; font-weight: bold; color: #e65100; padding: 3px 8px; border-radius: 6px; background-color: rgba(230, 81, 0, 0.08); display: flex; align-items: center; gap: 5px; }
+.deadlineOverdue { color: #d32f2f; background-color: rgba(211, 47, 47, 0.08); }
+
+.cardFooterShelf { border-top: 1px solid rgba(0,0,0,0.06); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; background-color: rgba(0,0,0,0.01); border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; }
+body.dark-mode .cardFooterShelf { border-top: 1px solid rgba(255,255,255,0.04); background-color: rgba(0,0,0,0.1); }
+.cardHorizonLabel { font-size: 11px; font-weight: bold; text-transform: uppercase; color: var(--card-subtext); letter-spacing: 0.5px; }
+.taskTime { font-size: 11px; color: var(--card-subtext); font-weight: bold; }
+
+.menuTriggerBtn { position: absolute; top: 14px; right: 14px; background: transparent; border: none; font-size: 16px; cursor: pointer; color: var(--card-subtext); transition: color 0.2s ease; padding: 2px; z-index: 5; }
+.menuTriggerBtn:hover { color: var(--card-text); }
+.taskMenuDropdown { position: absolute; top: 40px; right: 15px; background-color: var(--card-bg); border: 1px solid rgba(0,0,0,0.08); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; flex-direction: column; z-index: 9999; overflow: hidden; }
+.menuOptionRow { background: transparent; border: none; padding: 10px 16px; font-size: 13px; font-weight: bold; color: var(--card-text); cursor: pointer; display: flex; align-items: center; gap: 10px; text-align: left; width: 100%; }
+.menuOptionRow:hover { background-color: rgba(0, 0, 0, 0.05); }
+.editOpt i { color: #2196f3; } .completeOpt i { color: #4CAF50; } .deleteOpt i { color: #c62828; }
+
+/* Status Overrides (Completed, Bin, Overdue) */
+#taskList li.completed, #completedList li { background-color: #4CAF50 !important; border-color: rgba(0,0,0,0.05); }
+#taskList li.completed .taskText, #taskList li.completed .cardCategoryFlag, #taskList li.completed .cardHorizonLabel, #taskList li.completed .taskTime, #taskList li.completed .menuTriggerBtn, #completedList li .taskText, #completedList li .cardCategoryFlag, #completedList li .cardHorizonLabel, #completedList li .taskTime, #completedList li .menuTriggerBtn { color: white !important; opacity: 1; }
+#taskList li.completed .deadlineTracker, #completedList li .deadlineTracker { background-color: rgba(255,255,255,0.15); color: white; }
+#taskList li.completed .cardFooterShelf, #completedList li .cardFooterShelf { border-top: 1px solid rgba(255,255,255,0.1); background-color: rgba(0,0,0,0.05); }
+
+#binList li { background-color: var(--card-bg); border: 1px solid rgba(198, 40, 40, 0.15); }
+#binList .taskText { text-decoration: line-through; opacity: 0.6; }
+#binList .deadlineTracker { background-color: rgba(198, 40, 40, 0.05); color: #c62828; }
+
+#taskList li.overdue-card { background-color: #d32f2f !important; border-color: rgba(0,0,0,0.1); animation: modalPopIn 0.3s ease; }
+#taskList li.overdue-card .taskText, #taskList li.overdue-card .cardHorizonLabel, #taskList li.overdue-card .taskTime, #taskList li.overdue-card .menuTriggerBtn { color: white !important; opacity: 1; }
+#taskList li.overdue-card .deadlineTracker { background-color: rgba(255,255,255,0.2) !important; color: white !important; }
+#taskList li.overdue-card .cardFooterShelf { border-top: 1px solid rgba(255,255,255,0.1); background-color: rgba(0,0,0,0.1); }
+
+/* Drag and Drop Hooks */
+#taskList li[draggable="true"] { cursor: grab; }
+#taskList li[draggable="true"]:active { cursor: grabbing; }
+#taskList li.dragging { opacity: 0.6; transform: scale(0.95) !important; box-shadow: 0 15px 25px rgba(0,0,0,0.2) !important; border: 2px dashed #ff9800; z-index: 10000; }
+
+/* ==========================================================================
+   8. SETTINGS & MODALS
+   ========================================================================== */
+.settingsCardWrapper { background-color: var(--card-bg); color: var(--card-text); width: 100%; min-width: 320px; max-width: 500px; margin: 40px auto; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; flex-direction: column; gap: 20px; transition: background-color 0.3s ease; box-sizing: border-box; }
+.settingsCardWrapper h2 { margin: 0 0 10px 0; font-size: 22px; border-bottom: 2px solid rgba(0,0,0,0.05); padding-bottom: 10px; }
+body.dark-mode .settingsCardWrapper h2 { border-bottom: 2px solid rgba(255,255,255,0.05); }
+.settingsRowGroup { display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.settingsRowGroup label { font-size: 14px; font-weight: bold; opacity: 0.9; }
+.settingsSubtext { margin: 0; font-size: 12px; color: var(--card-subtext); }
+.inlineInputGroup { display: flex; gap: 10px; width: 100%; }
+.inlineInputGroup input { flex-grow: 1; height: 40px; border-radius: 10px; border: 1px solid var(--card-subtext); padding: 0 15px; font-size: 15px; outline: none; background-color: transparent; color: var(--card-text); }
+.settingsActionBtn { height: 40px; border-radius: 10px; border: none; background-color: #2c1a4d; color: white; font-weight: bold; padding: 0 20px; cursor: pointer; transition: background-color 0.2s ease; font-size: 14px; }
+.settingsActionBtn:hover { background-color: #432b73; }
+.locationBtnColor { background-color: #009688; display: flex; align-items: center; gap: 8px; justify-content: center; width: max-content; padding: 0 20px; }
+.locationBtnColor:hover { background-color: #00796b; }
+.logoutBorderTop { border-top: 1px solid rgba(0, 0, 0, 0.08); padding-top: 15px; margin-top: 5px; }
+body.dark-mode .logoutBorderTop { border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.logoutBtnColor { background-color: #c62828 !important; color: white !important; display: flex; align-items: center; gap: 8px; justify-content: center; width: max-content; padding: 0 20px; margin-top: 4px; }
+.logoutBtnColor:hover { background-color: #b71c1c !important; }
+body.dark-mode .settingsActionBtn { background-color: #ff9800; color: #121212; }
+body.dark-mode .settingsActionBtn:hover { background-color: #e08600; }
+body.dark-mode .locationBtnColor { background-color: #009688; color: white; }
+
+.modalOverlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 200000; opacity: 1; transition: opacity 0.25s ease; }
+.modalBox { background-color: var(--card-bg); color: var(--card-text); width: 90%; max-width: 380px; padding: 30px; border-radius: 20px; box-shadow: 0 20px 45px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; text-align: center; animation: modalPopIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+@keyframes modalPopIn { 0% { transform: scale(0.85); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.modalHeader { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.warningIcon { font-size: 38px; color: #e53935; margin-bottom: 4px; }
+.modalHeader h3 { margin: 0; font-size: 22px; font-weight: bold; }
+.modalHeader p { margin: 0; font-size: 13px; color: var(--card-subtext); line-height: 1.5; }
+.modalActionsRow { display: flex; gap: 12px; width: 100%; }
+.modalBtn { flex: 1; height: 44px; border-radius: 12px; border: none; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
+.secondaryBtn { background-color: rgba(0,0,0,0.05); color: var(--card-text); }
+.secondaryBtn:hover { background-color: rgba(0,0,0,0.1); }
+body.dark-mode .secondaryBtn { background-color: rgba(255,255,255,0.08); }
+body.dark-mode .secondaryBtn:hover { background-color: rgba(255,255,255,0.15); }
+.primaryDangerBtn { background-color: #c62828; color: white; box-shadow: 0 4px 10px rgba(198, 40, 40, 0.2); }
+.primaryDangerBtn:hover { background-color: #b71c1c; transform: translateY(-1px); }
+.animatePulse { animation: slowPulse 2s infinite ease-in-out; }
+@keyframes slowPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.06); opacity: 0.85; } }
