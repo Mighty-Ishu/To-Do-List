@@ -524,7 +524,16 @@ function renderActiveTasksView() {
                 }
             }
         } else {
-            countdownHTML = `<span class="deadlineTracker"><i class="fa-solid fa-hourglass"></i> End of ${safeHorizon}</span>`;
+            // --- THE FIX: ALWAYS CHECK THE ABSOLUTE BOUNDARY ---
+            // Even if the user didn't set a specific time, check if the day/week/month has physically ended.
+            if (task.absoluteDeadline && now.getTime() > task.absoluteDeadline) {
+                if (!task.completed) {
+                    li.classList.add("overdue-card");
+                }
+                countdownHTML = `<span class="deadlineTracker deadlineOverdue"><i class="fa-solid fa-circle-xmark"></i> Expired</span>`;
+            } else {
+                countdownHTML = `<span class="deadlineTracker"><i class="fa-solid fa-hourglass"></i> End of ${safeHorizon}</span>`;
+            }
         }
 
         // Generate the structural HTML
